@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import Routers from './route/route';
+import { withCookies } from 'react-cookie';
+import Layout from './layouts/Layout';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+    <Layout.Main>
+        <Routers/>
+      </Layout.Main>
+    </Layout>
   );
 }
 
-export default App;
+export default withCookies(App);
