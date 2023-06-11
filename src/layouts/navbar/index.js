@@ -6,7 +6,7 @@ import { ShoppingCartOutlined, MenuOutlined } from '@ant-design/icons';
 import './style.scss';
 // import { useCookies} from "react-cookie"
 import logo from '../../logo_app.png';
-import { listProduct_search } from '../../api/search';
+import { search } from '../../api/search';
 
 export default function Navbar() {
 
@@ -20,7 +20,7 @@ export default function Navbar() {
     if (value !== "") {
       try {
         // setReload(false)
-        await listProduct_search({
+        await search({
           key: value
         }).then((res) => {
           if (res.data.length > 0) { setData_search(res.data); }

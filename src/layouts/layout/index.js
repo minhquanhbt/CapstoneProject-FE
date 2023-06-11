@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import _get from 'lodash/get'
 import { findSlot } from '../../utils/pages'
 import Navbar from '../navbar'
-import 'antd/dist/antd.min.css';
 
 const { Content } = Layout
 const Mylayout = ({ children }) => {

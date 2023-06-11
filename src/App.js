@@ -2,6 +2,7 @@ import React  from 'react';
 import Routers from './route/route';
 import { withCookies } from 'react-cookie';
 import Layout from './layouts/layout';
+import 'antd/dist/reset.css';
 
 function App() {
   return (

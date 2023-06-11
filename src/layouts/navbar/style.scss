@@ -1,0 +1,37 @@
+@import "~bootstrap/scss/bootstrap";
+.navbar {
+    background-color: #dcf3f2;
+    color: #272343;
+    font-size: 16px;
+    padding: 10px;
+    display: flex;
+}
+.cartNavbar{  
+    margin-right: 15%;
+    padding-bottom: 15px;
+    display: inline-flex;
+}
+.avatarNavbar{
+    margin-right: 5%;
+    padding-top: 15px;
+}
+.searchNavbar{
+    // margin-left: 20%;
+}
+img.logo_nav{
+    width: auto;
+    height: 70px;
+}
+.cursor-pointer{
+    .bell-icon {
+        color: #ffd803;
+    }
+}
+.menuNavbar{
+    padding: 10px;
+    margin-top: 40px;
+}
+.user-icon-container {
+    border-radius: 50%;
+    background-color: #ffd803;
+}
