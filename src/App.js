@@ -1,6 +1,7 @@
+import React  from 'react';
 import Routers from './route/route';
 import { withCookies } from 'react-cookie';
-import Layout from './layouts/Layout';
+import Layout from './layouts/layout';
 
 function App() {
   return (
