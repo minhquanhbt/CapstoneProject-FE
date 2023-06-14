@@ -59,7 +59,7 @@ export default function Navbar() {
       localStorage.clear();
       sessionStorage.clear();
       role = 3;
-      window.location.href = '/login';
+      window.location.href = '/';
     } catch (error) {
       console.log(error)
     }
@@ -109,7 +109,7 @@ export default function Navbar() {
       <div>
         <a href="/Register" style={{ padding: 10 }}> Đăng ký</a>
         |
-        <a href="/login" style={{ padding: 10 }}>Đăng nhập</a>
+        <a href="/" style={{ padding: 10 }}>Đăng nhập</a>
       </div>
     )
   }
