@@ -107,7 +107,7 @@ export default function Navbar() {
   else {
     checkLogin = (
       <div>
-        <a href="/Register" style={{ padding: 10 }}> Đăng ký</a>
+        <a href="/register" style={{ padding: 10 }}> Đăng ký</a>
         |
         <a href="/" style={{ padding: 10 }}>Đăng nhập</a>
       </div>

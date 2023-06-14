@@ -3,3 +3,5 @@ import instance from './axios'
 export const getCards1 = async () => instance.get('/v1/getMainInfo')
 //Sign in
 export const login = async (argument) => instance.post('/login', argument)
+//Sign up
+export const register = async (argument) => instance.post('/register', argument)
