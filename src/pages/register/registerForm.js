@@ -88,6 +88,28 @@ const RegisterForm = () => {
                                 <Input />
                             </Form.Item>
                             <Form.Item
+                                name="username"
+                                label="Tên đăng nhập"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập mật khẩu của bạn!',
+                                    },
+                                    {
+                                        type: 'string',
+                                        min: 8,
+                                        message: 'Hãy đặt tên đăng nhập có nhiều hơn 8 kí tự',
+                                    },
+                                    {
+                                        type: 'string',
+                                        max: 64,
+                                        message: 'Hãy đặt tên đăng nhập có ít hơn 64 kí tự',
+                                    }
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
                                 name="email"
                                 label="E-mail"
                                 rules={[
