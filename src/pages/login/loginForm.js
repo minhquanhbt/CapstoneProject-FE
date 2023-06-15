@@ -89,6 +89,16 @@ function LoginForm() {
                   required: true,
                   message: 'Vui lòng nhập Username(Tên đăng nhập)!',
                 },
+                {
+                    type: 'string',
+                    min: 8,
+                    message: 'Hãy nhập tên đăng nhập có nhiều hơn 8 kí tự',
+                },
+                {
+                    type: 'string',
+                    max: 64,
+                    message: 'Hãy nhập tên đăng nhập có ít hơn 64 kí tự',
+                }
               ]}
             >
               <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username/Tên đăng nhập" />
@@ -100,6 +110,16 @@ function LoginForm() {
                   required: true,
                   message: 'Vui lòng nhập mật khẩu của bạn!',
                 },
+                {
+                    type: 'string',
+                    min: 8,
+                    message: 'Hãy nhập mật khẩu có nhiều hơn 8 kí tự',
+                },
+                {
+                    type: 'string',
+                    max: 24,
+                    message: 'Hãy nhập mật khẩu có ít hơn 24 kí tự',
+                }
               ]}
             >
               <Input
