@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import MainPage from '../pages/main_page';
 import Login from '../pages/login';
 import Register from '../pages/register';
+import VerifyEmail from '../pages/verify';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify/:token" element={<VerifyEmail />} />
         </Routes>
       </Router>
   )

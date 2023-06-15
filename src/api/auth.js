@@ -1,7 +1,7 @@
 import instance from './axios'
-//get all product v1
-export const getCards1 = async () => instance.get('/v1/getMainInfo')
 //Sign in
 export const login = async (argument) => instance.post('/login', argument)
 //Sign up
 export const register = async (argument) => instance.post('/register', argument)
+//Accepted
+export const accepted = async (argument) => instance.post('/accepted', argument)

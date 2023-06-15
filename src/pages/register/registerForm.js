@@ -6,6 +6,7 @@ import {
     Form,
     Input,
     Button,
+    Select,
     Checkbox,
     notification,
 } from 'antd';
@@ -13,13 +14,16 @@ import {
 const RegisterForm = () => {
     const [componentSize, setComponentSize] = useState('default');
     const onFinish = (values) => {
+        console.log(values)
         register({
             name: values.name,
+            username: values.username,
             email: values.email,
             password: values.password,
+            level: values.level,
         }).then(res => openNotificationSuccess(res))
             .catch((error) => {
-                if (error.request.status === 400) {
+                if (error.request.status === 403) {
                     notification.error({
                         message: 'Email này đã được đăng ký!',
                         duration: 3,
@@ -29,7 +33,7 @@ const RegisterForm = () => {
     };
     const openNotificationSuccess = (res) => {
         notification.success({
-            message: 'Chào mừng'+res.data.name+' đến với E-Commerce!',
+            message: 'Thư xác nhận đã được gửi đến '+res.data.email+'. Vui lòng kiểm tra và xác nhận đăng ký ',
             duration: 3,
         })
         localStorage.setItem("user-info", JSON.stringify(res.data));
@@ -41,6 +45,9 @@ const RegisterForm = () => {
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
+
+    
+    const { Option } = Select;
     //-------------------------------end
 
     return (
@@ -83,6 +90,16 @@ const RegisterForm = () => {
                                         required: true,
                                         message: 'Hãy cho chúng tôi biết tên của bạn',
                                     },
+                                    {
+                                        type: 'string',
+                                        min: 5,
+                                        message: 'Hãy đặt tên có nhiều hơn 5 kí tự',
+                                    },
+                                    {
+                                        type: 'string',
+                                        max: 64,
+                                        message: 'Hãy đặt tên có ít hơn 64 kí tự',
+                                    }
                                 ]}
                             >
                                 <Input />
@@ -172,6 +189,24 @@ const RegisterForm = () => {
                                 ]}
                             >
                                 <Input.Password />
+                            </Form.Item>
+                            <Form.Item
+                                name="level"
+                                label="Cấp độ JLPT"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Hãy cho chúng tôi biết cấp độ của bạn',
+                                    },
+                                ]}
+                            >
+                                <Select name="level" placeholder="Bạn muốn bắt đầu ở cấp độ nào">
+                                    <Option value="N5">N5</Option>
+                                    <Option value="N4">N4</Option>
+                                    <Option value="N3">N3</Option>
+                                    <Option value="N2">N2</Option>
+                                    <Option value="N1">N1</Option>
+                                </Select>
                             </Form.Item>
                             <Form.Item
                                 name="agreement"
