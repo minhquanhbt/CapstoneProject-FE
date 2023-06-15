@@ -7,7 +7,7 @@ const instance = axios.create({
     port: 80,
     timeout: 5000,
     headers: {
-    'X-XSRF-TOKEN': cookies.read('XSRF-TOKEN'),
+        'X-XSRF-TOKEN': cookies.read('XSRF-TOKEN'),
     },
 })
 
