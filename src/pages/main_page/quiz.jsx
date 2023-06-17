@@ -5,7 +5,7 @@ import './style.css';
 import Product from './card';
 import { getLogedMainData, getMainData } from '../../api/main_page';
 
-const VocabulariesList = () => {
+const Quiz = () => {
     const [list, setList] = useState([]);
 
     useEffect(() => {
@@ -48,4 +48,4 @@ const VocabulariesList = () => {
     );
 };
 
-export default () => <VocabulariesList />;
+export default () => <Quiz />;

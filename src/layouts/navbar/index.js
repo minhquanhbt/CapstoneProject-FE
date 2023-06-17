@@ -58,7 +58,6 @@ export default function Navbar() {
     try {
       localStorage.clear();
       sessionStorage.clear();
-      role = 3;
       window.location.href = '/';
     } catch (error) {
       console.log(error)
@@ -124,7 +123,7 @@ export default function Navbar() {
             </a>
             : null
           }
-          <a href={role !== 2 ? "/productList" : "/sellingProduct"}>
+          <a href="/main">
             <img src={logo} alt="logo" className="logo_nav" />
           </a>
         </div>
