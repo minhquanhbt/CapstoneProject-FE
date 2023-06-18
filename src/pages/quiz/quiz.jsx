@@ -2,10 +2,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 import React, { useEffect, useState } from 'react';
 import './style.css';
-import Product from './card';
 import { getLogedMainData, getMainData } from '../../api/main_page';
+import { Card } from 'antd';
 
-const Quiz = () => {
+const { Meta } = Card;
+
+const QuizCard = () => {
     const [list, setList] = useState([]);
 
     useEffect(() => {
@@ -28,24 +30,27 @@ const Quiz = () => {
         fetchData();
 
     }, [])
-    
-    let component;
-    if (list !== null) {
-        if (list !== undefined) {
-            component = (
-                list.map((item) => <Product item={item}></Product>)
-            )
-        }
-    }
-    else {
-        component = (<h1>fail</h1>)
-    }
     return (
         // <div className="latest-articles" style={{ margin: "0px 15%" }}>
         <div style={{ margin: "0px 14% 0 19%" }}>
-            {component}
+            <div>
+                <a href={"/detail/"+list.id}>
+                    <Card
+                        hoverable
+                        style={{ width: 180 , float:'left',marginRight:'5%',marginBottom:'50px'}}
+                        cover={
+                            <div className='card' 
+                                style={{fontSize: "50px", backgroundColor: "#f9bc60", textAlign: "center"}}>
+                                {list.word?list.word:list.character}
+                            </div>
+                        }
+                    >
+                        <Meta title={list.group?list.group:list.pronouce}/>
+                    </Card>
+                </a>
+            </div>
         </div>
     );
 };
 
-export default () => <Quiz />;
+export default () => <QuizCard />;

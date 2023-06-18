@@ -2,13 +2,13 @@
 import React from 'react';
 import './style.css';
 import VocabulariesList from './cards';
-import Quiz from './quiz';
-import test from './icon/test.png';
-import exam from './icon/exam.png';
+import test from '../../icon/test.png';
+import exam from '../../icon/exam.png';
+import Quiz from '../../pages/quiz';
 
 function MainPage() {
   return (
-      <div className='main-container'>
+    <div className='main-container'>
       <div className='left-sidebar'>
         <div className='imp-links'>
           <a href='/'><img src={exam}/>Kiểm tra năng lực</a>
@@ -21,7 +21,7 @@ function MainPage() {
       <div className='right-sidebar'>
         <Quiz></Quiz>
       </div>
-      </div>
+    </div>
     )
 } 
 export default MainPage

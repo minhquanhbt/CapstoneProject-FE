@@ -12,7 +12,9 @@ const Mylayout = ({ children }) => {
   return (
     <div className="otherlayout">
       <Layout>
-        <Layout className="site-layout" style={{backgroundColor:"rgb(202 220 227)"}}>
+        <Layout className="site-layout" 
+                // style={{backgroundColor:"rgb(202 220 227)"}}
+        >
           <Navbar />
           <Content
             style={{

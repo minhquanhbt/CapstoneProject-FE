@@ -42,7 +42,7 @@ const VocabulariesList = () => {
     }
     return (
         // <div className="latest-articles" style={{ margin: "0px 15%" }}>
-        <div style={{ margin: "0px 14% 0 19%" }}>
+        <div style={{ margin: "0px 2% 0 3%" }}>
             {component}
         </div>
     );
