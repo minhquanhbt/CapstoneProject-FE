@@ -25,7 +25,7 @@ function LoginForm() {
       })
   };
   const openNotificationSuccess = (res) => {
-      localStorage.setItem("user-info", JSON.stringify(res.data));
+    localStorage.setItem("user-info", JSON.stringify(res.data));
     notification.success({
       message: 'Chào mừng bạn quay lại, '+res.data.name+"!",
       duration: 3,

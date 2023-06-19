@@ -4,7 +4,7 @@ import "./style.css";
 import LoginForm from './loginForm';
 
 function login() {
-  if(localStorage['user-info']!=null || sessionStorage['user-info']!=null) {window.location.href = '/productList'}
+  if(localStorage['user-info']!=null || sessionStorage['user-info']!=null) {window.location.href = '/main'}
   else{
     return (
           <div>

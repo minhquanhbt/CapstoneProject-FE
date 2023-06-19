@@ -18,8 +18,10 @@ function MainPage() {
       <div className='main-content'>
         <VocabulariesList className='list-card'/>
       </div>
+      
+      
       <div className='right-sidebar'>
-        <Quiz></Quiz>
+      {localStorage['user-info']?<Quiz></Quiz>:<div></div>}
       </div>
     </div>
     )

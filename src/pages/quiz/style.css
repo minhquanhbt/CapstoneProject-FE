@@ -1,0 +1,33 @@
+.ant-card-meta-title{
+    white-space: pre-wrap;
+}
+.answer-button{
+    margin: 5%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+button.answer-button {
+    width: 100%;
+    font-size: 16px;
+    color: #001e1d;
+    background-color: #f9bc60;
+    border-radius: 15px;
+    display: flex;
+    padding: 5px;
+    justify-content: flex-start;
+    align-items: center;
+    border: 5px solid #234668;
+    cursor: pointer;
+}
+
+
+.correct {
+    background-color: #2f922f;
+  }
+  
+.incorrect {
+background-color: #ff3333;
+}
