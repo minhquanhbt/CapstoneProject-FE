@@ -38,12 +38,7 @@ export default function Navbar() {
     }
   }
 
-  let info;
-  if (localStorage.getItem('remember') === 'local') {
-    info = JSON.parse(localStorage.getItem('user-info'));
-  } else if (localStorage.getItem('remember') === 'session') {
-    info = JSON.parse(sessionStorage.getItem('user-info'));
-  }
+  let info = JSON.parse(localStorage.getItem('user-info')); 
 
   const { Search } = Input;
 
@@ -58,7 +53,6 @@ export default function Navbar() {
     try {
       localStorage.clear();
       sessionStorage.clear();
-      role = 3;
       window.location.href = '/';
     } catch (error) {
       console.log(error)
@@ -74,19 +68,11 @@ export default function Navbar() {
     <Menu className=" menuNavbar">
       <Menu.Item key="0">
         <a onClick={handleProfile}>
-          <a>Profile</a>
+          <a>Thông tin người dùng</a>
         </a>
       </Menu.Item>
-      {role === 1 ?
-      <Menu.Item key="0">
-        <a onClick={handleHistory}>
-          <a>Lịch sử đặt hàng</a>
-        </a>
-      </Menu.Item>
-      : null
-      }
       <Menu.Item key="1">
-        <a onClick={handleLogout}>Logout</a>
+        <a onClick={handleLogout}>Đăng xuất</a>
       </Menu.Item>
     </Menu>
   )
@@ -106,7 +92,7 @@ export default function Navbar() {
   }
   else {
     checkLogin = (
-      <div>
+      <div className='login-button'>
         <a href="/register" style={{ padding: 10 }}> Đăng ký</a>
         |
         <a href="/" style={{ padding: 10 }}>Đăng nhập</a>
@@ -124,7 +110,7 @@ export default function Navbar() {
             </a>
             : null
           }
-          <a href={role !== 2 ? "/productList" : "/sellingProduct"}>
+          <a href="/main">
             <img src={logo} alt="logo" className="logo_nav" />
           </a>
         </div>
@@ -136,16 +122,6 @@ export default function Navbar() {
       </div>
       <div className="cartNavbar">
         <Space direction="horizontal">
-          {(role === 1)
-            ?
-            <>
-              <div style={{ marginRight: '25px' }}>
-                <Button type="text" href={"/cart"} icon={<ShoppingCartOutlined style={{ fontSize: '200%' }} />} />
-              </div>
-            </>
-            :
-            null
-          }
           {checkLogin}
         </Space>
       </div>

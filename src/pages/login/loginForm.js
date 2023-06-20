@@ -9,7 +9,6 @@ import logo from '../../logo_app.png';
 import {login} from '../../api/auth';
 
 function LoginForm() {
-  const [remember, setRemember] = useState(true);
   const onFinish = async (values) => {
     await login({
       username: values.username,
@@ -26,42 +25,13 @@ function LoginForm() {
       })
   };
   const openNotificationSuccess = (res) => {
-    if(remember){
-      localStorage.setItem("user-info", JSON.stringify(res.data));
-      localStorage.setItem("remember", 'local');
-    }    
-    else{
-      sessionStorage.setItem("user-info", JSON.stringify(res.data));
-      localStorage.setItem("remember", 'session');
-    }
-    // localStorage.setItem("age", maxAge);
-    // setCookie("userInfo", JSON.stringify(res.data),
-    // {
-    //   path: "/",
-    //   maxAge: maxAge,
-    // });
+    localStorage.setItem("user-info", JSON.stringify(res.data));
     notification.success({
       message: 'Chào mừng bạn quay lại, '+res.data.name+"!",
       duration: 3,
     })
-    //retrieve data 
-    // JSON.parse(localStorage.getItem('user-info'))
-    if(res.data.role===0){window.location.href= "/admin";}
-    else if(res.data.role===2){window.location.href= "/sellingProduct";}
-    else if(res.data.role!==2){window.location.href= "/productList";}
-    // if(cookies.userInfo.role!==2){navigate("/productList");}
+    window.location.href= "/main";
   }
-  const onRemember = (e) => {
-    if(e.target.checked){
-      // setAge(90*86400)
-      setRemember(true);
-    }
-    else{
-      // setAge(86400)
-      setRemember(false);
-    }
-      
-  };
   return (
     <div>
       <title>Đăng nhập hoặc Đăng ký</title>
@@ -129,10 +99,6 @@ function LoginForm() {
               />
             </Form.Item>
             <Form.Item>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox onChange={onRemember}>Ghi nhớ đăng nhập</Checkbox>
-              </Form.Item>
-
               <a className="login-form-forgot" href="">
                 Quên mật khẩu?
               </a>

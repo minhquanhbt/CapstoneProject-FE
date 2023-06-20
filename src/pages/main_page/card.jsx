@@ -1,32 +1,26 @@
 import React from 'react';
-import { Card, Rate } from 'antd';
+import { Card } from 'antd';
 
 const { Meta } = Card;
-
-function averageRate(list_review) {
-    if (list_review !== undefined) {
-        if (list_review.length > 0) {
-            let res = 0;
-            for (let i = 0; i < list_review.length; i++) {
-                res += list_review[i];
-            }
-            return (res / list_review.length);
-        }
-    }
-    return 0;
-}
 
 const Product = (item) => (
     <div>
         {/* {console.log(item)} */}
-        <a href={"/product_detail/"+item.item.product.id}>
+        <a href={"/detail/"+(item.item.group?"kanji/":"vocabulary/")+item.item.id}>
             <Card
                 hoverable
-                style={{ width: 240 , float:'left',marginRight:'5%',marginBottom:'50px'}}
-                cover={<img alt="mainImage" src={item.item.product.image} />}
+                style={{ width: 180 , float:'left',marginRight:'3%',marginBottom:'50px'}}
+                cover={
+                    <div className='card' 
+                        style={{fontSize: "50px", color:"#fffffe", backgroundColor: "#004643", textAlign: "center"}}>
+                        {item.item.word?item.item.word:item.item.character}
+                    </div>
+                }
             >
-                <Rate allowHalf disabled defaultValue={averageRate(item.item.star_rating)} />
-                <Meta title={item.item.product.name} description={item.item.product.price+" VND"} />
+                <Meta className="pronounce" 
+                    title={item.item.group?(item.item.pronounces[0].Hiragana?item.item.pronounces[0].Hiragana:item.item.pronounces[0].Katakana):item.item.pronounce}/>
+                <Meta className="meaning" 
+                    title={item.item.group?item.item.group:item.item.meaning_vietnamese[0].meaning}/>
             </Card>
         </a>
     </div>

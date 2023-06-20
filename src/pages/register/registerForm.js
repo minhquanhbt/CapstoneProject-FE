@@ -32,6 +32,7 @@ const RegisterForm = () => {
             })
     };
     const openNotificationSuccess = (res) => {
+        localStorage.setItem("user-info", JSON.stringify(res.data));
         notification.success({
             message: 'Thư xác nhận đã được gửi đến '+res.data.email+'. Vui lòng kiểm tra và xác nhận đăng ký ',
             duration: 3,

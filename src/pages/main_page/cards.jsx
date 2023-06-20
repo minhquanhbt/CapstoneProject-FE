@@ -3,16 +3,30 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 import Product from './card';
-import { getCards1 } from '../../api/main_page';
+import { getLogedMainData, getMainData } from '../../api/main_page';
 
-const ProductListForm = () => {
+const VocabulariesList = () => {
     const [list, setList] = useState([]);
 
-    useEffect(async () => {
-        await getCards1().then((res) => {
-            setList((list) => res.data);
-        })
-        .catch((error) => console.log(error))
+    useEffect(() => {
+        async function fetchData() {
+            if(localStorage['user-info']!=null){
+                await getLogedMainData().then((res) => {
+                    // console.log(res)
+                    setList((list) => res.data);
+                })
+                .catch((error) => console.log(error))
+            }
+            else{
+                await getMainData().then((res) => {
+                    // console.log(res)
+                    setList((list) => res.data);
+                })
+                .catch((error) => console.log(error))
+            }
+        }
+        fetchData();
+
     }, [])
     
     let component;
@@ -28,10 +42,10 @@ const ProductListForm = () => {
     }
     return (
         // <div className="latest-articles" style={{ margin: "0px 15%" }}>
-        <div style={{ margin: "0px 14% 0 19%" }}>
+        <div style={{ margin: "0px 2% 0 3%" }}>
             {component}
         </div>
     );
 };
 
-export default () => <ProductListForm />;
+export default () => <VocabulariesList />;
