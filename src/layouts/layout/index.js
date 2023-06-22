@@ -18,7 +18,7 @@ const Mylayout = ({ children }) => {
           <Navbar />
           <Content
             style={{
-              margin: '45px 16px',
+              margin: '45px 16px 400px',
               padding: 24,
               minHeight: 280,
               // backgroundColor: '#fff',
