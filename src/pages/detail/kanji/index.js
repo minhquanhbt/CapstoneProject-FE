@@ -11,6 +11,7 @@ function KanjiDetail() {
     useEffect(() => {
       getKanjiData({ 
         kanji_id: id,
+        user_id: (localStorage['user-info']?JSON.parse(localStorage.getItem("user-info")).id:null)
       }).then((res) => {
         setKanji(res.data);
       }).catch((error) => console.log(error.response.request.response))
@@ -37,12 +38,10 @@ function KanjiDetail() {
 
   const example = [];
   if (kanji.vocabularies != undefined) {
-    console.log(kanji)
     kanji.vocabularies.forEach((vocabulary) => {
       example.push(
-      <a className='vocabulary' href={"/detail/vocabulary/"+vocabulary.id}><p className='vocabulary-item'>{vocabulary.word+' '}</p></a>
-    )
-    console.log(vocabulary)
+        <a className='vocabulary' href={"/detail/vocabulary/"+vocabulary.id}><p className='vocabulary-item'>{vocabulary.word+' '}</p></a>
+      )
     })
   }
 

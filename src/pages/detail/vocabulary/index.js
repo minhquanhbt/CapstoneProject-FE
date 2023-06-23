@@ -12,6 +12,7 @@ function VocabularyDetail() {
     useEffect(() => {
         getVocabularyData({ 
         vocabulary_id: id,
+        user_id: (localStorage['user-info']?JSON.parse(localStorage.getItem("user-info")).id:null)
       }).then((res) => {
         setVocabulary(res.data);
       }).catch((error) => console.log(error.response.request.response))
