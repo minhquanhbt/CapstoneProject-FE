@@ -7,6 +7,8 @@ const { Meta } = Card;
 function Test() {
 
   const [test, setTest] = useState();
+  const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState();
   const [current, setCurrent] = useState(0);
   const [answer, setAnswer] = useState([]);
   const maxlenght = 30;
@@ -23,14 +25,44 @@ function Test() {
           window.location.href = '/';
       }
     }
+    function shuffleData(){
+      if(test!=null){
+        if(test!=undefined){
+          console.log('shuffle')
+          let tmp = [...test];
+          for(var i;i<Object.keys(tmp).length;i++){
+            tmp[i].option = shuffle(tmp[i].option);
+          }
+          setTest(tmp);
+        }
+      }
+    }
     fetchData();
+    shuffleData();
   }, [])
+
+  function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
 
   const handleAnswerButtonClick = async (answerOption) => {
     let currentAnswer = [...answer];
-    currentAnswer[current] = [test[current].question, answerOption];
+    currentAnswer[current] = [test[current].question, answerOption, test[current].type];
     setAnswer(currentAnswer)
-    console.log(answer);
     if(current === Object.keys(test).length-1){
       openNotification('Bạn đã hoàn thành tất cả câu hỏi, bạn có muốn kết thúc bài kiểm tra ?')
     }
@@ -66,9 +98,17 @@ function Test() {
   };
 
   const handleFinish = async () => {
-    console.log('finish');
+    sendTestResult({
+      data:answer
+    }).then((res) => {
+      setResult(res);
+      console.log(res);
+    })
+    .catch((error) => console.log(error));
+    setShowResult(true);
   };
 
+  
   const testCard =[];
   if(test!=null){
     if(test!=undefined){
@@ -106,16 +146,45 @@ function Test() {
       )
     }
   }
+
+  const endButton = [];
+  endButton.push(
+    <div className='end-section'>
+      <button className="restart-button" onClick={() => (window.location.href= "/test")}>Làm lại</button>
+      <button className="finish-button" onClick={() => (window.location.href= "/")}>Quay về trang chủ</button>
+    </div>
+
+  )
+
+  const resultForm =[];
+  if(result!=null){
+    if(result!=undefined){
+      result.forEach((result) => {
+        resultForm.push(
+          <div className={'single-result '+ (result.result?'true':'false')}>
+            <h5>{result.question}</h5>
+            <div className='right'>
+              <b>Câu trả lời đúng: </b><p>{result.right}</p>
+            </div>
+            <div className='choice'>
+              <b>Câu trả lời đã chọn: </b><p>{result.answer}</p>
+            </div>
+          </div>
+        )
+      })
+    }
+  }
   return (
     <div className='main-container'>
       <div className='left-sidebar'>
       </div>
       <div className='main-content'>
         <div className='test'>
-          {testCard}
+          {showResult?resultForm:testCard}
         </div>
       </div>
       <div className='right-sidebar'>
+          {showResult?endButton:null}
       </div>
     </div>
     )

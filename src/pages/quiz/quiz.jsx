@@ -60,7 +60,7 @@ const QuizCard = () => {
         }
       
         return array;
-      }
+    }
 
     const handleAnswerButtonClick = async (answerOption) => {
         // console.log(quest)
