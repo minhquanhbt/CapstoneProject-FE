@@ -11,8 +11,8 @@ function MainPage() {
     <div className='main-container'>
       <div className='left-sidebar'>
         <div className='imp-links'>
-          <a href='/'><img src={exam}/>Kiểm tra năng lực</a>
-          <a href='/'><img src={test}  />Thi thử</a>
+          <a href='/test'><img src={exam}/>Kiểm tra năng lực</a>
+          <a href='/exam'><img src={test}  />Thi thử</a>
         </div>
       </div>
       <div className='main-content'>

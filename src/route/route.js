@@ -7,6 +7,8 @@ import VocabularyDetail from '../pages/detail/vocabulary';
 import Login from '../pages/login';
 import Register from '../pages/register';
 import VerifyEmail from '../pages/verify';
+import Test from '../pages/test';
+import Exam from '../pages/exam';
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
           <Route path="/main" element={<MainPage/>} />
           <Route path="/detail/kanji/:id" element={<KanjiDetail/>} />
           <Route path="/detail/vocabulary/:id" element={<VocabularyDetail/>} />
+          <Route path="/test" element={<Test/>} />
+          <Route path="/exam" element={<Exam/>} />
         </Routes>
       </Router>
   )
