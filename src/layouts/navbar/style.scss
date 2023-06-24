@@ -5,15 +5,18 @@
     font-size: 16px;
     padding: 10px;
     display: flex;
+    max-height: 90px;
 }
 .cartNavbar{  
     margin-right: 15%;
     padding-bottom: 15px;
     display: inline-flex;
 }
-.avatarNavbar{
-    margin-right: 5%;
+.menu{
     padding-top: 15px;
+}
+.menu .name-button{
+    cursor: pointer;
 }
 .searchNavbar{
     // margin-left: 20%;
@@ -27,9 +30,9 @@ img.logo_nav{
         color: #ffd803;
     }
 }
-.menuNavbar{
+.menu{
     padding: 10px;
-    margin-top: 40px;
+    margin-right: 10%;
 }
 .user-icon-container {
     border-radius: 50%;
@@ -40,4 +43,43 @@ img.logo_nav{
     align-items: center;
     color: #000000;
     width: fit-content;
+}
+.search-wrapper{
+    width: 500px;
+}
+.search-result{
+    width: 500px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 8px #ddd;
+    border-radius: 10px;
+    margin-top: 0.5rem;
+    max-height: 300px;
+    overflow-y: scroll;
+    position: fixed;
+}
+.search-result .item:hover {
+    background-color: #efefef;
+}
+
+.data-item-link{
+    text-decoration: none;
+    align-items: center;
+    color: #000000;
+}
+.search-result{
+	z-index: 2;
+}
+.search-result .item .japanese{
+    display: block;
+}
+.search-result .item .character{
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+.search-result .item .meaning{
+    margin: 5px;
+    font-size: 10px;
 }

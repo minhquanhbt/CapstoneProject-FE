@@ -1,46 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import { Menu, Dropdown, Avatar, Input, Space, Button } from 'antd';
-import { ShoppingCartOutlined, MenuOutlined } from '@ant-design/icons';
+import { Menu, Dropdown, Space } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
+import { SearchBar } from './searchbar';
 import './style.scss';
 // import { useCookies} from "react-cookie"
 import logo from '../../logo_app.png';
-import { search } from '../../api/search';
 
 export default function Navbar() {
 
-  const [data_search, setData_search] = useState([]);
-  // const [reload, setReload] = useState(false);
-
-  const onSearch = async (value) => {
-    if (localStorage.getItem('data-search') !== null) {
-      localStorage.setItem('data-search', null)
-    }
-    if (value !== "") {
-      try {
-        // setReload(false)
-        await search({
-          key: value
-        }).then((res) => {
-          if (res.data.length > 0) { setData_search(res.data); }
-        }).catch((error) => console.log(error))
-      } catch (e) { console.error(e) }
-      localStorage.setItem("data-search", JSON.stringify(data_search))
-    }
-    else {
-      setData_search(null)
-
-      // localStorage.setItem("data-search", JSON.stringify());
-    }
-    if (data_search.length > 0) {
-      window.location.href = "/search"
-    }
-  }
-
   let info = JSON.parse(localStorage.getItem('user-info')); 
-
-  const { Search } = Input;
 
   let role;
   if (info !== undefined) {
@@ -80,13 +50,11 @@ export default function Navbar() {
   if (info !== undefined && info !== null) {
     checkLogin = (
       <div>
-        <div>
-          <Dropdown overlay={userInformation} trigger={['click']}>
-            <div className="avatarNavbar">
-              <Avatar src={info.avatar} className="" style={{ float: 'right', width: '40px', height: '40px' }} />
-            </div>
-          </Dropdown>
-        </div>
+        <Dropdown overlay={userInformation} trigger={['click']}>
+          <div className="name-button">
+            <p className='name'>{info.name}</p>
+          </div>
+        </Dropdown>
       </div>
     )
   }
@@ -102,25 +70,21 @@ export default function Navbar() {
 
   return (
     <div className="navbar">
-      <div >
-        <div>
+      <div className='logo'>
           {role === 0 ?
             <a href="/admin">
               <MenuOutlined style={{ fontSize: '30px', marginRight: "15px" }} />
             </a>
             : null
           }
-          <a href="/main">
+          <a href="/main" className='logo-image'>
             <img src={logo} alt="logo" className="logo_nav" />
           </a>
-        </div>
       </div>
-      <div className="searchNavbar">
-        <div>
-          <Search style={{ width: 500 }} placeholder="Bạn cần gì?" onSearch={onSearch} enterButton />
-        </div>
+      <div className='search-bar'>
+        <SearchBar />
       </div>
-      <div className="cartNavbar">
+      <div className="menu">
         <Space direction="horizontal">
           {checkLogin}
         </Space>
