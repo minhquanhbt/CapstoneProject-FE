@@ -11,13 +11,12 @@ function Test() {
   const [result, setResult] = useState();
   const [current, setCurrent] = useState(0);
   const [answer, setAnswer] = useState([]);
-  const maxlenght = 30;
 
   useEffect(() => {
     async function fetchData() {
       if(localStorage['user-info']!=null){
         await getTest().then((res) => {
-          setTest(res);
+          setTest(res,()=>{init()});
         })
         .catch((error) => console.log(error))
       }
@@ -25,39 +24,10 @@ function Test() {
           window.location.href = '/';
       }
     }
-    function shuffleData(){
-      if(test!=null){
-        if(test!=undefined){
-          console.log('shuffle')
-          let tmp = [...test];
-          for(var i;i<Object.keys(tmp).length;i++){
-            tmp[i].option = shuffle(tmp[i].option);
-          }
-          setTest(tmp);
-        }
-      }
-    }
     fetchData();
-    shuffleData();
   }, [])
 
-  function shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
-  
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-  
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-  
-    return array;
-  }
+  useEffect(() => {init()},[test])
 
   const handleAnswerButtonClick = async (answerOption) => {
     let currentAnswer = [...answer];
@@ -98,6 +68,7 @@ function Test() {
   };
 
   const handleFinish = async () => {
+    console.log(answer)
     sendTestResult({
       data:answer
     }).then((res) => {
@@ -107,11 +78,22 @@ function Test() {
     .catch((error) => console.log(error));
     setShowResult(true);
   };
-
+  const init = () => {
+    if(test!=null){
+      if(test!=undefined){
+        let tmp = JSON.parse(JSON.stringify(test));
+        let question = [];
+        for(var i=0; i<Object.keys(tmp).length; i++){
+          question.push([tmp[i].question,'?',tmp[i].type]);
+        }
+        setAnswer(question);
+      }
+    }
+  }
   
   const testCard =[];
   if(test!=null){
-    if(test!=undefined){
+    if(test!=undefined){  
       testCard.push(
         <div>
           <Card

@@ -82,7 +82,7 @@ export default function Navbar() {
           </a>
       </div>
       <div className='search-bar'>
-        <SearchBar />
+        {(window.location.pathname === '/exam')?null:<SearchBar />}
       </div>
       <div className="menu">
         <Space direction="horizontal">

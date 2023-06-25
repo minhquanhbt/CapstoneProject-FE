@@ -9,6 +9,7 @@ import Register from '../pages/register';
 import VerifyEmail from '../pages/verify';
 import Test from '../pages/test';
 import Exam from '../pages/exam';
+import Profile from '../pages/profile';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/detail/vocabulary/:id" element={<VocabularyDetail/>} />
           <Route path="/test" element={<Test/>} />
           <Route path="/exam" element={<Exam/>} />
+          <Route path="/profile" element={<Profile/>} />
         </Routes>
       </Router>
   )
