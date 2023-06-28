@@ -28,19 +28,34 @@ export default function Navbar() {
       console.log(error)
     }
   }
-  const handleHistory = () => {
-    window.location.href = '/history'
+  const handleKanji = () => {
+    window.location.href = '/kanji/add'
+  }
+  const handleVoc = () => {
+    window.location.href = '/vocabulary/add'
   }
   const handleProfile = () => {
     window.location.href = '/profile'
   }
   const userInformation = (
-    <Menu className=" menuNavbar">
+    <Menu className="menuNavbar">
       <Menu.Item key="0">
         <a onClick={handleProfile}>
           <a>Thông tin người dùng</a>
         </a>
       </Menu.Item>
+      {info.role === 2?
+        <Menu.Item key="2">
+          <a onClick={handleKanji}>
+            <a>Thêm Kanji</a>
+          </a>
+        </Menu.Item>:null}
+      {info.role === 2?
+        <Menu.Item key="3">
+          <a onClick={handleVoc}>
+            <a>Thêm từ vựng</a>
+          </a>
+        </Menu.Item>:null} 
       <Menu.Item key="1">
         <a onClick={handleLogout}>Đăng xuất</a>
       </Menu.Item>

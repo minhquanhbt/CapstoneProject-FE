@@ -7,22 +7,47 @@ import {
     Input,
     Button,
     Select,
+    Spin,
     Checkbox,
+    Upload,
     notification,
+    message
 } from 'antd';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import ImgCrop from 'antd-img-crop';
+
+const dummyRequest = ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+};
+
+const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+);
 
 const RegisterForm = () => {
     const [componentSize, setComponentSize] = useState('default');
-    const onFinish = (values) => {
-        console.log(values)
-        register({
-            name: values.name,
-            username: values.username,
-            email: values.email,
-            password: values.password,
-            level: values.level,
-        }).then(res => openNotificationSuccess(res))
-            .catch((error) => {
+    const [loading, setLoading] = useState(false);
+    const [isImg, setISImg] = useState(true);
+    const [img, setImg] = useState();
+    const [sending, setSending] = useState(false);
+    const onFinish = async (values) => {
+        try{
+            setSending(true)
+            const formData = new FormData()
+            formData.append('name', values.name)
+            formData.append('username', values.username)
+            formData.append('email', values.email)
+            formData.append('password', values.password)
+            formData.append('level', values.level)
+            formData.append('avatar', img.originFileObj)
+            await register(formData).then((res) => {
+                console.log(res[0]);
+                openNotificationSuccess(res[0])
+            }).catch((error) => {
+                console.log(error)
+                setSending(false)
                 if (error.request.status === 403) {
                     notification.error({
                         message: 'Email này đã được đăng ký!',
@@ -30,22 +55,94 @@ const RegisterForm = () => {
                     })
                 }
             })
+        } catch(e){
+            notification.error({
+                message: 'Hãy tải lên ảnh đại diện của bạn',
+                duration: 3,
+            })
+        }
     };
-    const openNotificationSuccess = (res) => {
-        localStorage.setItem("user-info", JSON.stringify(res.data));
+    const openNotificationSuccess = async (res) => {
         notification.success({
-            message: 'Thư xác nhận đã được gửi đến '+res.data.email+'. Vui lòng kiểm tra và xác nhận đăng ký ',
+            message: 'Thư xác nhận đã được gửi đến '+res.email+'. Vui lòng kiểm tra và xác nhận đăng ký ',
             duration: 3,
         })
-        localStorage.setItem("user-info", JSON.stringify(res.data));
-        localStorage.setItem("remember", 'local');
-        if(res.data.role!==2){window.location.href= "/productList";}
-        else if(res.data.role!==1){window.location.href= "/sellingProduct";}
+        await delay(3000); 
+        window.location.href= "/";
     }
     
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
+
+    
+
+    const onChangeImg = (response) => {
+        try{
+            if (response.file.status !== 'uploading') {
+                setLoading(true)
+            }
+            if (response.file.status === 'done') {
+                setImg(response.file);
+            } else if (response.file.status === 'error') {
+                message.error(`${response.file.name} 
+                                file upload failed.`);
+            }
+            setLoading(false)
+        }catch(e){console.log(e)}
+    };
+    const removeImg = () => {
+        try{
+            setImg(undefined);
+        }catch(e){console.log(e)}
+    };
+
+    const onPreview = async (file) => {
+        if(isImg){
+            let src = file.url;
+
+            if (!src) {
+                src = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file.originFileObj);
+
+                    reader.onload = () => resolve(reader.result);
+                });
+            }
+
+            const image = new Image();
+            image.src = src;
+            const imgWindow = window.open(src);
+            imgWindow?.document.write(image.outerHTML);
+        }
+    };
+    const beforeUpload = (file) => {
+        const isJpgOrPng = (file.type === 'image/jpeg' || file.type === 'image/png'|| file.type === 'image/jpg'|| file.type === 'image/svg'|| file.type === 'image/gif');
+      
+        if (!isJpgOrPng) {
+          message.error('Bạn chỉ có thể tải lên file có định dạng JPG/PNG/JPG/SVG!');
+        }
+      
+        const isLt2M = (file.size / 1024 / 1024 < 2);
+      
+        if (!isLt2M) {
+          message.error('Ảnh có dung lượng quá lớn!');
+        }
+        setISImg(isJpgOrPng && isLt2M);
+        return isJpgOrPng && isLt2M;
+      };
+    const uploadButton = (
+        <div>
+          {loading ? <LoadingOutlined /> : <PlusOutlined />}
+          <div
+            style={{
+              marginTop: 8,
+            }}
+          >
+            Tải lên
+          </div>
+        </div>
+      );
 
     
     const { Option } = Select;
@@ -159,8 +256,8 @@ const RegisterForm = () => {
                                     },
                                     {
                                         type: 'string',
-                                        max: 24,
-                                        message: 'Hãy đặt mật khẩu có ít hơn 24 kí tự',
+                                        max: 64,
+                                        message: 'Hãy đặt mật khẩu có ít hơn 64 kí tự',
                                     }
                                 ]}
                                 hasFeedback
@@ -190,6 +287,22 @@ const RegisterForm = () => {
                                 ]}
                             >
                                 <Input.Password />
+                            </Form.Item>
+                            <Form.Item label="Ảnh đại diện" name="photo" >
+                                <ImgCrop>
+                                    <Upload
+                                        customRequest={dummyRequest}
+                                        listType="picture-card"
+                                        onChange={(response)=>onChangeImg(response)}
+                                        accept=".png,.jpeg,.jpg,.gif,.svg"
+                                        beforeUpload={beforeUpload}
+                                        onPreview={onPreview}
+                                        maxCount={1}
+                                        onRemove={removeImg}
+                                    >
+                                        {uploadButton}
+                                    </Upload>
+                                </ImgCrop>
                             </Form.Item>
                             <Form.Item
                                 name="level"
@@ -221,14 +334,14 @@ const RegisterForm = () => {
                                 ]}
                             >
                                 <Checkbox>
-                                    Tôi đồng ý với các chính sách và điều khoản của Website.
+                                    Tôi đồng ý với các chính sách và điều khoản của Help Kanji.
                                 </Checkbox>
                             </Form.Item>
                             <Form.Item
                                 className='bt_register'>
-                                <Button type="primary" htmlType="submit">
+                                {sending?<Spin/>:<Button type="primary" htmlType="submit">
                                     Đăng ký
-                                </Button>
+                                </Button>}
                                 <Button type="primary" htmlType="exit" style={{ marginLeft: '20px' }}>
                                     <a href='/login' style={{ textDecoration: 'none' }}>Hủy</a>
                                 </Button>

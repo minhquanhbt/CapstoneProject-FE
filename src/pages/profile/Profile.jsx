@@ -15,7 +15,7 @@ info = JSON.parse(localStorage.getItem('user-info'));
       <div style={{ margin: '0 26%' }}>
         <div className="profile">
           <figure>
-            <Avatar src={'https://pbl5storage.s3.ap-southeast-1.amazonaws.com/images/avatars/avatar.png'} alt="avatar" 
+            <Avatar src={info.avatar} alt="avatar" 
                     className="profileAvatar" size={256}/>
           </figure>
           <header>
