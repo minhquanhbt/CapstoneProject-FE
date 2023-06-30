@@ -2,95 +2,246 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import './style.css';
-import { getKanjiData } from '../../../api/detail';
+import {
+    Form,
+    Input,
+    Button,
+    Select,
+    Spin,
+    Switch,
+    notification,
+} from 'antd';
+import { addKanji } from '../../../api/detail';
 
-function KanjiDetail() {
-  const { id } = useParams();
-  const [kanji, setKanji] = useState([]);
-  try {
-    useEffect(() => {
-      getKanjiData({ 
-        kanji_id: id,
-        user_id: (localStorage['user-info']?JSON.parse(localStorage.getItem("user-info")).id:null)
-      }).then((res) => {
-        setKanji(res.data);
-      }).catch((error) => console.log(error.response.request.response))
-    }, [])
+const inputArr = [
+  {
+    type: "text",
+    id: 1,
+    value: ""
   }
-  catch (e) { console.error(e) }
+];
+const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+);
 
-  const onyomi = [];
-  const kunyomi = [];
-  if (kanji.pronounces != undefined) {
-    kanji.pronounces.forEach((pronounce) => {
-      if (pronounce.Type =='Onyomi'){
-        onyomi.push(
-          <p className='onyomi-item'>{pronounce.Katakana+' '}</p>
-        )
-      }
-      if (pronounce.Type =='Kunyomi'){
-        kunyomi.push(
-          <p className='kunyomi-item'>{pronounce.Hiragana+' '}</p>
-        )
-      }
+function VocabularyDetail() {
+  const { Option } = Select;
+  const [componentSize, setComponentSize] = useState('default');
+  const [sending, setSending] = useState(false);
+  const [onyo, setOnyo] = useState([]);
+  const [arr, setArr] = useState(inputArr);
+
+  const Mean = [];
+  
+
+  const katakana_regex = /^[ァ-ン]+$/;
+  const hiragana_regex = /^[ぁ-ん]+$/;
+  const kanji_regex = /^[一-龥]+$/;
+  const romanji_regex = /^[A-Za-z]+$/;
+
+  const onFinish = (values) =>{
+    setSending(true)
+    addKanji({
+      character: values.character,
+      group: values.group,
+      japanese: values.japanese,
+      level: values.level,
+      mean: values.meaning,
+      romanji: values.romanji,
+      type: onyo,
+    }).then(res => openNotificationSuccess(res))
+        .catch((error) => {
+          setSending(false)
+          if (error.request.status === 400) {
+            notification.error({
+              message: 'Hán tự này đã được đăng ký!',
+              duration: 3,
+            })
+          }
     })
   }
 
-  const example = [];
-  if (kanji.vocabularies != undefined) {
-    kanji.vocabularies.forEach((vocabulary) => {
-      example.push(
-        <a className='vocabulary' href={"/detail/vocabulary/"+vocabulary.id}><p className='vocabulary-item'>{vocabulary.word+' '}</p></a>
-      )
+  
+  const openNotificationSuccess = async (res) => {
+    notification.success({
+      message: 'Đã thêm từ thành công!',
+      duration: 3,
     })
+    await delay(1000); 
+    window.location.href= "/";
   }
+
+  const addInput = () => {
+    let currentCheck = [...onyo];
+    currentCheck[onyo.length] = false;
+    setOnyo(currentCheck);
+    setArr(s => {
+      return [
+        ...s,
+        {
+          type: "text",
+          value: ""
+        }
+      ];
+    });
+  };
+
+  
+  const onTypeChange = (i, checked) => {
+    let currentCheck = [...onyo];
+    currentCheck[i] = checked;
+    setOnyo(currentCheck);
+  };
 
   const content = () =>{
-    if ((kanji !== null)&&(kanji.group !== undefined)) {
-      return(
-        <div>
-          <div style={{ width: '40%', float: 'left', textAlign: 'right' }}>  
-            <div className='character-card'>
-                {kanji.character}
-            </div>
-          </div>
-          <div style={{ width: '57%', float: 'left', marginLeft: '20px' }}>
-              <div style={{ width: '75%' }}>
-                  <h2>{kanji.character} - {kanji.group.toUpperCase()}</h2>
-                  <table>
-                      <tr>
-                          <th colspan="2">
-                              <b>JLPT : N{kanji.level}</b>
-                          </th>
-                      </tr>
-                      <tr className='kunyomi pronounce'>
-                          <th>Kunyomi:</th>
-                          <td>{kunyomi}</td>
-                      </tr>
-                      <tr className='onyomi pronounce'>
-                          <th>Onyomi:</th>
-                          <td>{onyomi}</td>
-                      </tr>
-                      <tr>
-                          <th>Nghĩa:</th>
-                          <td>{kanji.meaning}</td>
-                      </tr>
-                      <tr>
-                          <th>Ví dụ:</th>
-                          <td>{example}</td>
-                      </tr>
-                  </table>
-              </div>
-          </div>
-        </div>
-      )
-    }
+    return(
+      <div className='main-content'>
+        
+        <Form
+          labelCol={{
+              span: 7,
+          }}
+          wrapperCol={{
+              span: 16,
+          }}
+          layout="horizontal"
+          initialValues={{
+              size: componentSize,
+          }}
+          size={componentSize}
+          onFinish={onFinish}
+      >
+          <Form.Item
+              name="character"
+              label="Từ Vựng:"
+              rules={[
+                  {
+                      required: true,
+                      message: 'Không thể để trống!',
+                  },
+                  {
+                     pattern: kanji_regex,
+                     message: 'Hãy điền từ vựng theo Hán tự'
+                  },
+                  {
+                      type: 'string',
+                      max: 1,
+                      message: 'chỉ có thể lưu trữ hán tự có 1 kí tự',
+                  }
+              ]}
+          >
+              <Input />
+          </Form.Item>
+          <Form.Item
+              name="group"
+              label="Âm hán việt của hán tự"
+              rules={[
+                  {
+                      required: true,
+                      message: 'Không thể để trống!',
+                  },
+              ]}
+          >
+              <Input />
+          </Form.Item>
+          <Form.Item
+              name="meaning"
+              label="Nghĩa của hán tự"
+              rules={[
+                  {
+                      required: true,
+                      message: 'Không thể để trống!',
+                  },
+              ]}
+          >
+              <Input />
+          </Form.Item>
+          <p style={{marginLeft:'100px'}}>Thêm cách phát âm cho hán tự này :
+            <Button onClick={addInput}>+</Button>
+          </p>
+            {arr.map((item, i) => {
+            return (
+              <div className={'pronouce-form '+i}>
+              <Form.Item label="Phân loại" valuePropName="checked">
+                <Switch checkedChildren="Onyomi" unCheckedChildren="Kunyomi" onChange={(checked)=>onTypeChange(i, checked)} />
+              </Form.Item>
+              <Form.Item
+                  name={['romanji', i]}
+                  label="Cách phát âm ở bảng chữ cái Roman"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Không thể để trống!',
+                    },
+                    {
+                      pattern: romanji_regex,
+                      message: 'Hãy điền đúng loại',
+                    },
+                  ]}
+              >
+                  <Input id={i}/>
+              </Form.Item>
+              <Form.Item
+                  name={['japanese', i]}
+                  label="Cách phát âm "
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Không thể để trống!',
+                    },
+                    {
+                      pattern: onyo[i]?katakana_regex:hiragana_regex,
+                      message: 'Hãy điền đúng loại',
+                    },
+                  ]}
+              >
+                  <Input id={i}/>
+              </Form.Item>
+              </div>);
+            })}
+          <Form.Item
+              name="level"
+              label="Cấp độ JLPT"
+              rules={[
+                  {
+                      required: true,
+                      message: 'Hãy cho chúng tôi biết cấp độ của từ vựng',
+                  },
+              ]}
+          >
+              <Select name="level" placeholder="Cấp độ của Hán tự này">
+                  <Option value={5}>N5</Option>
+                  <Option value={4}>N4</Option>
+                  <Option value={3}>N3</Option>
+                  <Option value={2}>N2</Option>
+                  <Option value={1}>N1</Option>
+              </Select>
+          </Form.Item>
+          <Form.Item
+              className='bt_register'>
+              {sending?<Spin/>:<Button type="primary" htmlType="submit">
+                  Thêm từ mới
+              </Button>}
+              <Button type="primary" htmlType="exit" style={{ marginLeft: '20px' }}>
+                  <a href='/' style={{ textDecoration: 'none' }}>Hủy</a>
+              </Button>
+          </Form.Item>
+      </Form>
+      </div>
+    )
   }
 
   return (
-    <div> 
-      {content()}
+    <div className='main-container'>
+    <div className='left'>
+    </div>
+    <div className='main'>
+      <h2>Thêm Hán tự mới :</h2>
+        {content()}
+    </div>
+    <div className='right'>
+    </div>
     </div>
   )
 } 
-export default KanjiDetail
+export default VocabularyDetail
