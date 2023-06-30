@@ -1,0 +1,7 @@
+.meaning-form{
+    border: 1px solid #ccc!important;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 50px;
+    transition: flex 0.7s ease-in;
+}

@@ -87,8 +87,8 @@ function LoginForm() {
                 },
                 {
                     type: 'string',
-                    max: 24,
-                    message: 'Hãy nhập mật khẩu có ít hơn 24 kí tự',
+                    max: 64,
+                    message: 'Hãy nhập mật khẩu có ít hơn 64 kí tự',
                 }
               ]}
             >
