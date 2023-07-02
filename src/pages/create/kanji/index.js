@@ -28,6 +28,7 @@ function VocabularyDetail() {
   const { Option } = Select;
   const [componentSize, setComponentSize] = useState('default');
   const [sending, setSending] = useState(false);
+  const [defaultChecked, setdefaultChecked] = useState(false);
   const [onyo, setOnyo] = useState([]);
   const [arr, setArr] = useState(inputArr);
 
@@ -40,6 +41,7 @@ function VocabularyDetail() {
   const romanji_regex = /^[A-Za-z]+$/;
 
   const onFinish = (values) =>{
+    console.log(values, onyo)
     setSending(true)
     addKanji({
       character: values.character,
@@ -48,7 +50,7 @@ function VocabularyDetail() {
       level: values.level,
       mean: values.meaning,
       romanji: values.romanji,
-      type: onyo,
+      type: values.type,
     }).then(res => openNotificationSuccess(res))
         .catch((error) => {
           setSending(false)
@@ -63,12 +65,12 @@ function VocabularyDetail() {
 
   
   const openNotificationSuccess = async (res) => {
+    console.log(res)
     notification.success({
       message: 'Đã thêm từ thành công!',
       duration: 3,
     })
-    await delay(1000); 
-    window.location.href= "/";
+    await delay(1000);
   }
 
   const addInput = () => {
@@ -162,8 +164,8 @@ function VocabularyDetail() {
             {arr.map((item, i) => {
             return (
               <div className={'pronouce-form '+i}>
-              <Form.Item label="Phân loại" valuePropName="checked">
-                <Switch checkedChildren="Onyomi" unCheckedChildren="Kunyomi" onChange={(checked)=>onTypeChange(i, checked)} />
+              <Form.Item name={['type', i]} label="Phân loại" valuePropName="checked" initialValue={false} >
+                <Switch checkedChildren="Onyomi" unCheckedChildren="Kunyomi" defaultChecked={defaultChecked} onChange={(checked)=>onTypeChange(i, checked)} />
               </Form.Item>
               <Form.Item
                   name={['romanji', i]}

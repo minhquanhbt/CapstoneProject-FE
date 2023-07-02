@@ -12,6 +12,7 @@ export const SearchBar = () => {
         await search({
             key: value
         }).then((res) => {
+            console.log(res)
             setSearchData(res);
         }).catch((error) => console.log(error))
       }
