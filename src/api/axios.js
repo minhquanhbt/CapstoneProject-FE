@@ -5,7 +5,7 @@ const instance = axios.create({
 //   baseURL: process.browser ? process.env.BROWSER_API_URL : require('../../config/next').SERVER_API_URL,
     baseURL: 'http://42.117.155.182:8000/api',
     port: 8000,
-    timeout: 5000,
+    timeout: 8000,
     headers: {
         'X-XSRF-TOKEN': cookies.read('XSRF-TOKEN'),
     },
