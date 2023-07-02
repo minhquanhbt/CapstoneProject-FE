@@ -44,18 +44,18 @@ export default function Navbar() {
           <a>Thông tin người dùng</a>
         </a>
       </Menu.Item>
-      {info.role === 2?
+      {info?(info.role === 2?
         <Menu.Item key="2">
           <a onClick={handleKanji}>
             <a>Thêm Kanji</a>
           </a>
-        </Menu.Item>:null}
-      {info.role === 2?
+        </Menu.Item>:null):null}
+      {info?(info.role === 2?
         <Menu.Item key="3">
           <a onClick={handleVoc}>
             <a>Thêm từ vựng</a>
           </a>
-        </Menu.Item>:null} 
+        </Menu.Item>:null):null} 
       <Menu.Item key="1">
         <a onClick={handleLogout}>Đăng xuất</a>
       </Menu.Item>
