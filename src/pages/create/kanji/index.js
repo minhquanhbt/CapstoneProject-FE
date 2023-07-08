@@ -71,6 +71,7 @@ function VocabularyDetail() {
       duration: 3,
     })
     await delay(1000);
+    window.location.href= "/";
   }
 
   const addInput = () => {
