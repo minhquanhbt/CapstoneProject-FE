@@ -23,13 +23,13 @@ info = JSON.parse(localStorage.getItem('user-info'));
           </header>
           <main>
             <dl>
-              <dt>Tên:</dt>
+              <dt>Tên</dt>
               <dd>{info.name}</dd>
               <dt>Email</dt>
               <dd>{info.email}</dd>
-              <dt>Cấp độ dự đoán:</dt>
+              <dt>Cấp độ dự đoán</dt>
               <dd>{info.level}</dd>
-              <dt>Điểm của bạn:</dt>
+              <dt>Điểm của bạn</dt>
               <dd>{info.point}</dd>
               <dd><div>
                   <Button href="/" danger size={'large'} 
